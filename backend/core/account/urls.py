@@ -1,4 +1,5 @@
 from django.urls import path, include
+from djoser.views import UserViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 from .views import testingAPI
@@ -9,7 +10,7 @@ urlpatterns = [
 
     #path('auth/', include('djoser.urls')),
     #path('auth/', include('djoser.urls.jwt')),
-
+    path('auth/signup', UserViewSet.as_view({'post': 'create'}), name="register"),
     path('auth/signin/', TokenObtainPairView.as_view(), name="create-token"),
     path('auth/api/token/refresh/', TokenRefreshView.as_view(), name="refresh-token"),
 ]
