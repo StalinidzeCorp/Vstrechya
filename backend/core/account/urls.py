@@ -8,9 +8,7 @@ urlpatterns = [
     path('test/', views.test),
     path('apitest/', testingAPI.as_view()),
 
-    #path('auth/', include('djoser.urls')),
-    #path('auth/', include('djoser.urls.jwt')),
-    path('auth/signup', UserViewSet.as_view({'post': 'create'}), name="register"),
+    path('auth/signup/', UserViewSet.as_view({'post': 'create'}), name="register"),
     path('auth/signin/', TokenObtainPairView.as_view(), name="create-token"),
     path('auth/api/token/refresh/', TokenRefreshView.as_view(), name="refresh-token"),
 ]
