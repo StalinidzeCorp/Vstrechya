@@ -3,9 +3,6 @@ from django.db import models
 from account.models import UserAccount
 
 
-#from backend.core.account.models import UserAccount
-
-
 class Collection(models.Model):
     name = models.CharField(max_length=255)
 
@@ -19,7 +16,7 @@ class UserCollection(models.Model):
 
 class CollectionItem(models.Model):
     collection_id = models.ForeignKey(Collection, on_delete=models.CASCADE)
-    image_url = models.URLField()
+    image_url = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
