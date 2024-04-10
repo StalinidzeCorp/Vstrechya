@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'djoser',
 
     'account',
+    'collection',
 ]
 
 MIDDLEWARE = [
@@ -42,7 +43,11 @@ DJOSER = {
     #'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'auth/activate/{uid}/{token}/',
     'SEND_ACTIVATION_EMAIL': False,
-    'SERIALIZERS': {}
+    'SERIALIZERS': {
+        "user_create": "backend.account.serializers.UserCreateSerializer",
+        #'current_user': 'backend.account.serializers.UserSerializer', #for /users/me endpoint
+        'user': 'account.serializers.UserSerializer'
+    }
 }
 
 
