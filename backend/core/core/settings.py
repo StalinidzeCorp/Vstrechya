@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'djoser',
+    'drf_spectacular',
 
     'account',
     'collection',
@@ -41,12 +42,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 DJOSER = {
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'LOGOUT_ON_PASSWORD_CHANGE': True,
+    'LOGIN_FIELD': 'email',
     #'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     #'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'auth/activate/{uid}/{token}/',
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
-        "user_create": "backend.account.serializers.UserCreateSerializer",
+        "user_create": "account.serializers.UserCreateSerializer",
         #'current_user': 'backend.account.serializers.UserSerializer', #for /users/me endpoint
         'user': 'account.serializers.UserSerializer'
     }
@@ -106,13 +110,23 @@ REST_FRAMEWORK = {
         #'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer', 'JWT',),
+    'AUTH_HEADER_TYPES': ('Bearer',),
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=120),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=3),
     "UPDATE_LAST_LOGIN": True,
     #"USER_AUTHENTICATION_RULE": "accounts.auth.default_user_authentication_rule",
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
 
 LANGUAGE_CODE = 'ru'
