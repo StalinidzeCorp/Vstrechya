@@ -15,20 +15,20 @@ class MuseumUserInline(admin.TabularInline):
 
 
 class MuseumAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'created_at', 'updated_at')
-    list_display_links = ('id', 'name')
+    list_display = ('id', 'short_name', 'name', 'created_at', 'updated_at')
+    list_display_links = ('id', 'name', 'short_name')
     search_fields = ('id', 'name', 'address', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at')
     readonly_fields = ('id', 'created_at', 'updated_at')
     save_on_top = True
-    inlines = [MuseumUserInline, MuseumCollectionInline]
+    inlines = (MuseumUserInline, MuseumCollectionInline)
 
 
 class MuseumUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'museum', 'joined_at')
+    list_display = ('id', 'user', 'museum', 'position', 'access_level')
     list_display_links = ('id', 'user')
     search_fields = ('id', 'user', 'museum', 'joined_at')
-    list_filter = ('museum', 'joined_at')
+    list_filter = ('museum', 'joined_at', 'access_level')
     readonly_fields = ('id', 'joined_at')
     save_on_top = True
 
