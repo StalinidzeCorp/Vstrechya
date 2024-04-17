@@ -3,7 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import UserAccount
 
-User = UserAccount
+User = get_user_model()
+
 
 class UsersCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
@@ -16,6 +17,8 @@ class UsersCreateSerializer(UserCreateSerializer):
                   'updated_at',
                   'phone',
                   )
+
+
 class UserDetailSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = User

@@ -8,14 +8,15 @@ from .models import UserAccount
 from .serializers import *
 
 User = UserAccount
-class testingAPI(APIView):
-    #permission_classes = [IsAuthenticated]
-    def get(self, request):
-        Users = User.objects.all()
-        serializer = UsersCreateSerializer(Users, many=True)
 
-        return Response(serializer.data)
-
-
-def test(request):
-    return HttpResponse('test page')
+# class testingAPI(APIView):
+#     #permission_classes = [IsAuthenticated]
+#     def get(self, request):
+#         Users = User.objects.all()
+#         serializer = UsersCreateSerializer(Users, many=True)
+#
+#         return Response(serializer.data)
+#
+#
+# def test(request):
+#     return HttpResponse('test page')
