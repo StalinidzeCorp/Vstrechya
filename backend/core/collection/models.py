@@ -21,7 +21,6 @@ class UserCollection(models.Model):
     class Meta:
         unique_together = ['user_id', 'collection_id']
 
-
 class MuseumCollection(models.Model):
     museum = models.ForeignKey(Museum, on_delete=models.CASCADE)
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
