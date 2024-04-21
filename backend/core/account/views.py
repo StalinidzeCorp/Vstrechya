@@ -12,6 +12,12 @@ from .serializers import *
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserDetailSerializer
+    def get_permissions(self):
+        if self.action == 'user_edit_get' or self.action == 'user_edit_post':
+            self.permission_classes = (IsAuthenticated,)
+        else:
+            self.permission_classes = (AllowAny,)
+        return tuple(permission() for permission in self.permission_classes)
 
     @action(detail=True)
     def user_get(self, request, *args, **kwargs):
@@ -43,10 +49,8 @@ class UserViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.update(instance=request.user, validated_data=data)
                 return Response(status=status.HTTP_201_CREATED)
-            else:
-                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-        else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 
