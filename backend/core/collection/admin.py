@@ -40,6 +40,8 @@ class CollectionItemInline(admin.TabularInline):
 
 
 class CollectionAdmin(admin.ModelAdmin):
+    fields = ('name','id', 'created_at')
+    readonly_fields = ('id', 'created_at')
     inlines = [CollectionItemInline]
 
 

@@ -10,3 +10,16 @@ class UserCollectionSerializer(UserCreateSerializer):
     class Meta:
         model = Collection
         fields = ('id','name')
+
+from rest_framework import serializers
+from .models import CollectionItem
+
+class CollectionItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectionItem
+        fields = '__all__'
+
+class CollectionCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = '__all__'
