@@ -63,5 +63,5 @@ class MuseumList(APIView):
         """
             Return a list of all users.
         """
-        serializer = self.serializer_class(self.queryset, many=True)
+        serializer = self.serializer_class(Museum.objects.all(), many=True)
         return Response(serializer.data)
