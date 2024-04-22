@@ -1,4 +1,8 @@
-version: '3.8'
+version: '3.9'
+
+networks:
+  default:
+    driver: bridge
 
 services:
   django:
@@ -28,6 +32,20 @@ services:
     restart: always
     ports:
       - "8080:8080"
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    entrypoint: redis-server --appendonly yes --requirepass somepass --maxmemory 512mb --maxmemory-policy allkeys-lru
+    networks:
+      - default
+    ports:
+      - "6379:6379"
+    volumes:
+      - /var/lib/appdata/redis/data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   pgdbdata: null
