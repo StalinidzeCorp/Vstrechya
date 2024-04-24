@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   django:
@@ -28,6 +28,12 @@ services:
     restart: always
     ports:
       - "8080:8080"
+
+  redis-qoovee:
+    image: redis:6.0.9
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   pgdbdata: null

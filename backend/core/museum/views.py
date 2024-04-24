@@ -2,9 +2,12 @@ from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from .models import Museum, MuseumUser
 from .serializers import MuseumSerializer
+from .utils import delete_cache
 
 
 class MuseumViewSet(APIView):
@@ -16,7 +19,9 @@ class MuseumViewSet(APIView):
 
     queryset = Museum.objects.all()
     serializer_class = MuseumSerializer
+    CACHE_KEY_PREFIX = "museum-view"
 
+    @method_decorator(cache_page(300, key_prefix=CACHE_KEY_PREFIX))
     def get(self, request: Request, *args, **kwargs):
         """
             Get museum by id.
@@ -36,6 +41,7 @@ class MuseumViewSet(APIView):
                 serializer = self.serializer_class(museum, data=request.data)
                 if serializer.is_valid():
                     serializer.save()
+                    delete_cache(self.CACHE_KEY_PREFIX)
                     return Response(serializer.data)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(status=status.HTTP_403_FORBIDDEN)
@@ -50,10 +56,12 @@ class MuseumList(APIView):
 
     queryset = Museum.objects.all()
     serializer_class = MuseumSerializer
+    CACHE_KEY_PREFIX = "museum-view"
 
+    @method_decorator(cache_page(300, key_prefix=CACHE_KEY_PREFIX))
     def get(self, request: Request, *args, **kwargs):
         """
             Return a list of all users.
         """
-        serializer = self.serializer_class(self.queryset, many=True)
+        serializer = self.serializer_class(Museum.objects.all(), many=True)
         return Response(serializer.data)
