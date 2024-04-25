@@ -23,6 +23,7 @@ class UsersCreateSerializer(UserCreateSerializer):
 
 class UserDetailSerializer(UserSerializer):
     collections = serializers.SerializerMethodField()
+
     class Meta(UserSerializer.Meta):
         model = User
         fields = ('id',
@@ -32,11 +33,13 @@ class UserDetailSerializer(UserSerializer):
                   'phone',
                   'collections',
                   )
+
     def get_collections(self, user):
         user_collections = UserCollection.objects.filter(user=user)
 
         collection_serializer = UserCollectionSerializer(user_collections, many=True)
         return collection_serializer.data
+
 
 class UserEditSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):

@@ -10,8 +10,10 @@ from django.contrib.auth import get_user_model
 from .models import UserAccount
 from .serializers import *
 
+
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserDetailSerializer
+
     def get_permissions(self):
         if self.action == 'user_edit_get' or self.action == 'user_edit_post':
             self.permission_classes = (IsAuthenticated,)
@@ -51,7 +53,3 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
-
-

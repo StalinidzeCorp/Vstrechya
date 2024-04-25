@@ -40,7 +40,7 @@ class CollectionItemInline(admin.TabularInline):
 
 
 class CollectionAdmin(admin.ModelAdmin):
-    fields = ('name','id', 'created_at')
+    fields = ('name', 'id', 'created_at')
     readonly_fields = ('id', 'created_at')
     inlines = [CollectionItemInline]
 
@@ -54,8 +54,12 @@ class CollectionItemAdmin(admin.ModelAdmin):
 
     get_photo.short_description = 'Превью'
 
+class UserCollectionAdmin(admin.ModelAdmin):
+    fields = ('user', 'collection', 'id')
+    readonly_fields = ('user', 'collection', 'id')
+
 
 admin.site.register(Collection, CollectionAdmin)
-admin.site.register(UserCollection)
+admin.site.register(UserCollection, UserCollectionAdmin)
 admin.site.register(CollectionItem, CollectionItemAdmin)
 admin.site.register(MuseumCollection, MuseumCollectionAdmin)
