@@ -21,6 +21,7 @@ class UserCollection(models.Model):
     class Meta:
         unique_together = ['user_id', 'collection_id']
 
+
 class MuseumCollection(models.Model):
     museum = models.ForeignKey(Museum, on_delete=models.CASCADE)
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
@@ -41,4 +42,3 @@ class CollectionItem(models.Model):
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-

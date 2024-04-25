@@ -1,17 +1,16 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from .models import UserAccount
 from .serializers import *
 
+
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserDetailSerializer
+
     def get_permissions(self):
         if self.action == 'user_edit_get' or self.action == 'user_edit_post':
             self.permission_classes = (IsAuthenticated,)
@@ -51,7 +50,3 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
-
-

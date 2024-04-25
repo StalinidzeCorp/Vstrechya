@@ -1,17 +1,24 @@
-from django.urls import path
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
+from django.urls import path, reverse_lazy
 from djoser.views import UserViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
-# from .views import testingAPI
+
+app_name="account"
 
 urlpatterns = [
-    # path('test/', views.test),
-    # path('apitest/', testingAPI.as_view()),
-
     path('auth/signup/', UserViewSet.as_view({'post': 'create'}), name="register"),
     path('auth/signin/', TokenObtainPairView.as_view(), name="create-token"),
     path('auth/api/token/refresh/', TokenRefreshView.as_view(), name="refresh-token"),
     path('users/me/', views.UserViewSet.as_view({'get': 'user_me'}), name='user-me'),
     path("users/<int:pk>/edit", views.UserViewSet.as_view({"get": "user_edit_get", "post": "user_edit_post"}), name="edit"),
     path("users/<int:pk>/", views.UserViewSet.as_view({"get": "user_get"}), name="user_detail"),
+
+    path("reset/password-reset/", PasswordResetView.as_view(
+        email_template_name="./password_reset_email.html", success_url=reverse_lazy("account:password_reset_done")), name="password_reset"),
+    path("reset/password-reset/done/", PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path("reset/password-reset/<uidb64>/<token>/", PasswordResetConfirmView.as_view(
+        success_url=reverse_lazy("account:password_reset_complete")), name="password_reset_confirm"),
+    path("reset/password-reset/complete/", PasswordResetCompleteView.as_view(), name="password_reset_complete"),
 ]
