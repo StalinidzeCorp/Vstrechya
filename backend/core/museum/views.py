@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 
 from .models import Museum, MuseumUser
 from .serializers import MuseumSerializer
-from .utils import delete_cache
+from core.utils import delete_cache
 
 
 class MuseumViewSet(APIView):
