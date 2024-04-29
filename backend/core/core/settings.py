@@ -69,6 +69,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
+AWS_SECRET = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_URL = 'https://digital-portfolio.hb.ru-msk.vkcs.cloud/'
+AWS_ENDPOINT_URL = 'https://hb.ru-msk.vkcs.cloud/'
 
 TEMPLATES = [
     {
@@ -142,14 +146,12 @@ SIMPLE_JWT = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
+    'TITLE': 'Yats API',
+    'DESCRIPTION': 'Yatspace API Endpoints',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
-
-
 
 LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Europe/Moscow'
