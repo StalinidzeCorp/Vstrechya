@@ -1,7 +1,9 @@
 import datetime
 from pathlib import Path
+import structlog
 from dotenv import load_dotenv
 import os
+from .utils import add_open_telemetry_spans
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,13 +25,110 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'djoser',
     'drf_spectacular',
+    'django_structlog',
 
     'account',
     'collection',
     'museum',
 ]
 
+base_structlog_processors = [
+    structlog.contextvars.merge_contextvars,
+    structlog.stdlib.add_logger_name,
+    structlog.stdlib.add_log_level,
+    structlog.stdlib.filter_by_level,
+    # Perform %-style formatting.
+    add_open_telemetry_spans,
+    structlog.stdlib.PositionalArgumentsFormatter(),
+    # Add a timestamp in ISO 8601 format.
+    structlog.processors.TimeStamper(fmt="iso"),
+    structlog.processors.StackInfoRenderer(),
+    # If some value is in bytes, decode it to a unicode str.
+    structlog.processors.UnicodeDecoder(),
+    # Add callsite parameters.
+    structlog.processors.CallsiteParameterAdder(
+        {
+            structlog.processors.CallsiteParameter.FILENAME,
+            structlog.processors.CallsiteParameter.FUNC_NAME,
+            structlog.processors.CallsiteParameter.LINENO,
+        }
+    ),
+]
+
+base_structlog_formatter = [structlog.stdlib.ProcessorFormatter.wrap_for_formatter]
+
+structlog.configure(
+    processors=base_structlog_processors + base_structlog_formatter,  # type: ignore
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    cache_logger_on_first_use=True,
+)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "colored_console": {
+            "()": structlog.stdlib.ProcessorFormatter,
+            "processor": structlog.dev.ConsoleRenderer(colors=True),
+        },
+        "json_formatter": {
+            "()": structlog.stdlib.ProcessorFormatter,
+            "processor": structlog.processors.JSONRenderer(),
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "colored_console",
+        },
+        "json": {
+            "class": "logging.StreamHandler",
+            "formatter": "json_formatter",
+        },
+        "null": {
+            "class": "logging.NullHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django_structlog": {
+            "level": "DEBUG",
+        },
+        # Django Structlog request middlewares
+        "django_structlog.middlewares": {
+            "level": "INFO",
+        },
+        # DB logs
+        "django.db.backends": {
+            "level": "CRITICAL",
+        },
+        # Use structlog middleware
+        "django.server": {
+            "handlers": ["null"],
+            "propagate": False,
+        },
+        # Use structlog middleware
+        "django.request": {
+            "handlers": ["null"],
+            "propagate": False,
+        },
+        # Use structlog middleware
+        "django.channels.server": {
+            "handlers": ["null"],
+            "propagate": False,
+        },
+        # Use structlog middleware
+        "werkzeug": {
+            "handlers": ["null"],
+            "propagate": False,
+        },
+    }
+}
 MIDDLEWARE = [
+    "django_structlog.middlewares.RequestMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

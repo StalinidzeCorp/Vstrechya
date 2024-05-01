@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 from core.utils import upload_image
 from .models import CollectionItem, UserCollection
@@ -26,7 +27,7 @@ class CollectionsViewSet(viewsets.ViewSet):
     @action(detail=True)
     def get_collection_by_id(self, request, *args, **kwargs):
         collection_id = kwargs.get('collection_id')
-        collection_items = CollectionItem.objects.filter(collection_id=collection_id)
+        collection_items = get_object_or_404(CollectionItem, collection_id=collection_id)
         serializer = CollectionItemSerializer(collection_items, many=True)
         return Response(serializer.data)
 
