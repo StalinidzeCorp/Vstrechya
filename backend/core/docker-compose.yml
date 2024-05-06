@@ -33,5 +33,11 @@ services:
     ports:
       - "6379:6379"
 
+  redis-messanger:
+    image: redis:6.0.9
+    restart: always
+    ports:
+      - "6380:6380"
+
 volumes:
   pgdbdata: null

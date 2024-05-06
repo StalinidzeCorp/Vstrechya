@@ -26,10 +26,12 @@ INSTALLED_APPS = [
     'djoser',
     'drf_spectacular',
     'django_structlog',
+    'channels',
 
     'account',
     'collection',
     'museum',
+    'messenger',
 ]
 
 base_structlog_processors = [
@@ -190,6 +192,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'messenger.asgi.application'
 
 DATABASES = {
     'default': {
@@ -250,6 +253,15 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('redis-messanger', '6380')],
+        },
+    },
 }
 
 LANGUAGE_CODE = 'ru'
