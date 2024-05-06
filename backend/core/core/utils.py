@@ -1,9 +1,25 @@
 import json
-
 from django.core.cache import cache
 from django.conf import settings
 import boto3
 import uuid
+from opentelemetry import trace
+
+
+def add_open_telemetry_spans(_, __, event_dict):
+    span = trace.get_current_span()
+    if not span.is_recording():
+        return event_dict
+
+    ctx = span.get_span_context()
+    parent = getattr(span, "parent", None)
+
+    event_dict["span_id"] = f"{ctx.span_id:x}"
+    event_dict["trace_id"] = f"{ctx.trace_id:x}"
+    if parent:
+        event_dict["parent_span_id"] = f"{parent.span_id:x}"
+
+    return event_dict
 
 
 def delete_cache(key_prefix: str):
