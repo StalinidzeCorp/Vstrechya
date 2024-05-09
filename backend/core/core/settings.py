@@ -13,6 +13,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
 AUTH_USER_MODEL = 'account.UserAccount'
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,10 +27,18 @@ INSTALLED_APPS = [
     'djoser',
     'drf_spectacular',
     'django_structlog',
+    'channels',
+    'corsheaders',
 
     'account',
     'collection',
     'museum',
+    'messenger',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:3000',
+    'http://localhost:3000',
 ]
 
 base_structlog_processors = [
@@ -129,8 +138,12 @@ LOGGING = {
 }
 MIDDLEWARE = [
     "django_structlog.middlewares.RequestMiddleware",
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -190,6 +203,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'messenger.asgi.application'
 
 DATABASES = {
     'default': {
@@ -205,7 +219,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis-qoovee/0'",
+        "LOCATION": "redis://redis-qoovee/0",
     }
 }
 
@@ -250,6 +264,17 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
+        "CONFIG": {
+            "hosts": [{
+                "address": "redis://redis-messanger/0",
+            }]
+        }
+    }
 }
 
 LANGUAGE_CODE = 'ru'
