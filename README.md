@@ -1,4 +1,4 @@
-# for-museum-pp
+# Yats
      
 Start django:
   go to folder "core" and type: (Docker required)   
