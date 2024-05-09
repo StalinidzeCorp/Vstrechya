@@ -47,7 +47,7 @@ class ChatConsumer(JsonWebsocketConsumer):
         self.send_json(
             {
                 "type": "online_user_list",
-                "users": [user.username for user in self.conversation.online.all()],
+                "users": [user.id for user in self.conversation.online.all()],
             }
         )
 
@@ -55,7 +55,7 @@ class ChatConsumer(JsonWebsocketConsumer):
             self.conversation_name,
             {
                 "type": "user_join",
-                "user": self.user.username,
+                "user": self.user.id,
             },
         )
 
@@ -78,7 +78,7 @@ class ChatConsumer(JsonWebsocketConsumer):
                 self.conversation_name,
                 {
                     "type": "user_leave",
-                    "user": self.user.username,
+                    "user": self.user.id,
                 },
             )
             self.conversation.online.remove(self.user)
@@ -87,9 +87,8 @@ class ChatConsumer(JsonWebsocketConsumer):
     def get_receiver(self):
         usernames = self.conversation_name.split("__")
         for username in usernames:
-            if username != self.user.username:
-                # This is the receiver
-                return User.objects.get(username=username)
+            if int(username) != self.user.id:
+                return User.objects.get(id=int(username))
 
     def receive_json(self, content, **kwargs):
         message_type = content["type"]
@@ -101,7 +100,7 @@ class ChatConsumer(JsonWebsocketConsumer):
             # Update the unread message count
             unread_count = Message.objects.filter(to_user=self.user, read=False).count()
             async_to_sync(self.channel_layer.group_send)(
-                self.user.username + "__notifications",
+                str(self.user.id) + "__notifications",
                 {
                     "type": "unread_count",
                     "unread_count": unread_count,
@@ -113,7 +112,7 @@ class ChatConsumer(JsonWebsocketConsumer):
                 self.conversation_name,
                 {
                     "type": "typing",
-                    "user": self.user.username,
+                    "user": self.user.id,
                     "typing": content["typing"],
                 },
             )
@@ -130,17 +129,17 @@ class ChatConsumer(JsonWebsocketConsumer):
                 self.conversation_name,
                 {
                     "type": "chat_message_echo",
-                    "name": self.user.username,
+                    "name": self.user.id,
                     "message": MessageSerializer(message).data,
                 },
             )
 
-            notification_group_name = self.get_receiver().username + "__notifications"
+            notification_group_name = str(self.get_receiver().id) + "__notifications"
             async_to_sync(self.channel_layer.group_send)(
                 notification_group_name,
                 {
                     "type": "new_message_notification",
-                    "name": self.user.username,
+                    "name": self.user.id,
                     "message": MessageSerializer(message).data,
                 },
             )
@@ -178,26 +177,27 @@ class NotificationConsumer(JsonWebsocketConsumer):
 
     def connect(self):
         self.user = self.scope["user"]
-        if not self.user.is_authenticated:
-            return
 
         self.accept()
 
         # private notification group
-        self.notification_group_name = self.user.username + "__notifications"
+        self.notification_group_name = str(self.user.id) + "__notifications"
         async_to_sync(self.channel_layer.group_add)(
             self.notification_group_name,
             self.channel_name,
         )
 
         # Send count of unread messages
-        unread_count = Message.objects.filter(to_user=self.user, read=False).count()
-        self.send_json(
-            {
-                "type": "unread_count",
-                "unread_count": unread_count,
-            }
-        )
+        try:
+            unread_count = Message.objects.filter(to_user=self.user, read=False).count()
+            self.send_json(
+                {
+                    "type": "unread_count",
+                    "unread_count": unread_count,
+                }
+            )
+        except Exception as e:
+            print(e)
 
     def disconnect(self, code):
         async_to_sync(self.channel_layer.group_discard)(

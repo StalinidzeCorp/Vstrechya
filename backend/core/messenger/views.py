@@ -13,7 +13,7 @@ class ConversationViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     lookup_field = "name"
 
     def get_queryset(self):
-        queryset = Conversation.objects.filter(name__contains=self.request.user.username)
+        queryset = Conversation.objects.filter(name__contains=str(self.request.user.id))
         return queryset
 
     def get_serializer_context(self):
@@ -28,7 +28,7 @@ class MessageViewSet(ListModelMixin, GenericViewSet):
     def get_queryset(self):
         conversation_name = self.request.GET.get("conversation")
         queryset = (
-            Message.objects.filter(conversation__name__contains=self.request.user.username,)
+            Message.objects.filter(conversation__name__contains=self.request.user.id,)
             .filter(conversation__name=conversation_name)
             .order_by("-timestamp")
         )

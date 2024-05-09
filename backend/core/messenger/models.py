@@ -26,6 +26,15 @@ class Conversation(models.Model):
         return f"{self.name} ({self.get_online_count()})"
 
 
+class ConversationUser(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    conversation = models.ForeignKey(to=Conversation, on_delete=models.CASCADE)
+    joined = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (("user", "conversation"),)
+
+
 class Message(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="messages")
@@ -36,4 +45,4 @@ class Message(models.Model):
     read = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"From {self.from_user.username} to {self.to_user.username}: {self.content} [{self.timestamp}]"
+        return f"From {self.from_user.first_name} to {self.to_user.first_name} [{self.timestamp}]"

@@ -28,7 +28,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True)
     def user_me(self, request):
         if request.user.is_authenticated:
-            serializer = self.get_serializer(request.user)
+            serializer = UserDetailSerializer(request.user)
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -50,3 +50,9 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    # !ONLY FOR CHAT APP!
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def all(self, request):
+        serializer = UserCreateSerializer(User.objects.all(), many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)

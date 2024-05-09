@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Message, Conversation
+from .models import Message, Conversation, ConversationUser
 from account.serializers import UsersCreateSerializer
 
 User = get_user_model()
@@ -26,10 +26,16 @@ class ConversationSerializer(serializers.ModelSerializer):
         usernames = obj.name.split("__")
         context = {}
         for username in usernames:
-            if username != self.context["user"].username:
+            if int(username) != self.context["user"].id:
                 # This is the other participant
-                other_user = User.objects.get(username=username)
+                other_user = User.objects.get(id=int(username))
                 return UsersCreateSerializer(other_user, context=context).data
+
+
+class ConversationUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConversationUser
+        fields = '__all__'
 
 
 class MessageSerializer(serializers.ModelSerializer):

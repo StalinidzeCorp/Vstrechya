@@ -26,12 +26,13 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 django_application = get_asgi_application()
 
 # Import websocket application here, so apps from django_application are loaded first
-from messenger import routing  # noqa isort:skip
+from .routing import websocket_urlpatterns # noqa isort:skip
 from channels.routing import ProtocolTypeRouter, URLRouter  # noqa isort:skip
+from django_channels_jwt.middleware import JwtAuthMiddlewareStack
 
 application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
-        "websocket": URLRouter(routing.websocket_urlpatterns),
+        "websocket": JwtAuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
     }
 )
