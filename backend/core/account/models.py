@@ -25,6 +25,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
+    image_url = models.CharField(max_length=255, default='https://digital-portfolio.hb.ru-msk.vkcs.cloud/defaultUserAvatar.jpg')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

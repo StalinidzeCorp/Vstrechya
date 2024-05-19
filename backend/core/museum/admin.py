@@ -5,7 +5,7 @@ from collection.admin import MuseumCollectionInline
 
 class MuseumUserInline(admin.TabularInline):
     model = MuseumUser
-    fields = ('user', 'museum', 'position', 'access_level', 'joined_at')
+    fields = ('user', 'museum', 'position', 'joined_at')
 
     readonly_fields = ('id', 'joined_at', 'user')
     can_delete = True
@@ -25,10 +25,10 @@ class MuseumAdmin(admin.ModelAdmin):
 
 
 class MuseumUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'museum', 'position', 'access_level')
+    list_display = ('id', 'user', 'museum', 'position')
     list_display_links = ('id', 'user')
     search_fields = ('id', 'user', 'museum', 'joined_at')
-    list_filter = ('museum', 'joined_at', 'access_level')
+    list_filter = ('museum', 'joined_at')
     readonly_fields = ('id', 'joined_at')
     save_on_top = True
 
