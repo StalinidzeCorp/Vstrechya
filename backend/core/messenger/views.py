@@ -22,13 +22,13 @@ class ConversationViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 class MessageViewSet(ListModelMixin, GenericViewSet):
     serializer_class = MessageSerializer
-    queryset = Message.objects.none()
+    queryset = Message.objects.all()
     pagination_class = MessagePagination
 
     def get_queryset(self):
         conversation_name = self.request.GET.get("conversation")
         queryset = (
-            Message.objects.filter(conversation__name__contains=self.request.user.id,)
+            Message.objects.filter(conversation__name__contains=str(self.request.user.id),)
             .filter(conversation__name=conversation_name)
             .order_by("-timestamp")
         )

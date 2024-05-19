@@ -1,3 +1,6 @@
+import base64
+import json
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -69,14 +72,18 @@ class CollectionsItemViewSet(viewsets.ViewSet):
     @action(detail=True)
     def collection_item_create_post(self, request, *args, **kwargs):
         img = request.data['img']
-        image_url = upload_image(img, 'collection')
-        data = {
-            'description': request.data['description'],
-            'image_url': image_url,
-            'collection': kwargs.get('collection_id'),
-        }
-        collection = CollectionItemSerializer(data=data)
-        if collection.is_valid():
-            collection.save()
-            return Response(collection.data, status=status.HTTP_201_CREATED)
-        return Response(collection.errors, status=status.HTTP_400_BAD_REQUEST)
+        if img:
+            image_url = upload_image.delay(base64.b64encode(img.read()), 'collection', True)
+            data = {
+                'description': request.data['description'],
+                'image_url': image_url.wait(timeout=None, interval=0.5),
+                'collection': kwargs.get('collection_id'),
+            }
+            collection = CollectionItemSerializer(data=data)
+            if collection.is_valid():
+                collection.save()
+                return Response(collection.data, status=status.HTTP_201_CREATED)
+            return Response(collection.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(json.dumps({'img': 'no image'}), status=status.HTTP_400_BAD_REQUEST)
+
+

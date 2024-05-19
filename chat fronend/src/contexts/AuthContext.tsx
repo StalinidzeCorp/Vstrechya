@@ -52,6 +52,7 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
 
   authAxios.interceptors.response.use(
     (response) => {
+      console.log(response)
       return response;
     },
     (error) => {

@@ -1,4 +1,7 @@
-import json
+import base64
+import io
+
+from celery import shared_task
 from django.core.cache import cache
 from django.conf import settings
 import boto3
@@ -27,7 +30,10 @@ def delete_cache(key_prefix: str):
     cache.delete_pattern(keys_pattern)
 
 
-def upload_image(img, app: str):
+@shared_task
+def upload_image(img, app: str, with_celery=True):
+    if with_celery:
+        img = io.BytesIO(base64.b64decode(img.decode(encoding='utf-8')))
     key = f'{app}/{uuid.uuid4()}.png'
     session = boto3.session.Session()
     s3 = session.client(

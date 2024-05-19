@@ -10,6 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+CELERY_BROKER_URL = 'redis://redis-qoovee/1'
+CELERY_RESULTS_URL = 'redis://redis-qoovee/1'
 AUTH_USER_MODEL = 'account.UserAccount'
 
 INSTALLED_APPS = [
