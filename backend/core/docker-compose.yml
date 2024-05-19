@@ -43,7 +43,7 @@ services:
     build: .
     hostname: worker
     entrypoint: celery
-    command: -A celery_app.app worker --loglevel=info
+    command: -A celery_app.app worker -n yatsworker --loglevel=info
     volumes:
       - .:/usr/src/app
     links:
