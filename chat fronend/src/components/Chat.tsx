@@ -247,7 +247,7 @@ export function Chat() {
       <div
         id="scrollableDiv"
         className={
-          "h-[40rem] mt-3 flex flex-col-reverse relative w-full overflow-y-auto p-6"
+          "h-[25rem] mt-3 flex flex-col-reverse relative w-full overflow-y-auto p-6"
         }
       >
         <div>

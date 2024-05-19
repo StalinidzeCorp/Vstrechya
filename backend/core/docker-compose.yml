@@ -39,5 +39,33 @@ services:
     ports:
       - "6380:6380"
 
+  celery-worker:
+    build: .
+    hostname: worker
+    entrypoint: celery
+    command: -A celery_app.app worker --loglevel=info
+    volumes:
+      - .:/usr/src/app
+    links:
+      - redis-qoovee
+    depends_on:
+      - redis-qoovee
+      - pgdb
+
+  flower:
+    build: .
+    hostname: flower
+    entrypoint: celery
+    command: -A celery_app.app flower
+    volumes:
+      - .:/usr/src/app
+    links:
+      - redis-qoovee
+    depends_on:
+      - redis-qoovee
+      - pgdb
+    ports:
+      - "5555:5555"
+
 volumes:
   pgdbdata: null
