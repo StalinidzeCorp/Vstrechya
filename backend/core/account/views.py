@@ -1,3 +1,5 @@
+import base64
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -5,6 +7,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from .models import UserAccount
+
+from core.utils import upload_image
 from .serializers import *
 
 
@@ -12,7 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserDetailSerializer
 
     def get_permissions(self):
-        if self.action == 'user_edit_get' or self.action == 'user_edit_post':
+        if self.action == 'user_edit_get' or self.action == 'user_edit_post' or self.action == 'upload_avatar':
             self.permission_classes = (IsAuthenticated,)
         else:
             self.permission_classes = (AllowAny,)
@@ -50,6 +54,17 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_201_CREATED)
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True, methods=['post'])
+    def upload_avatar(self, request, *args, **kwargs):
+        img = request.data.get('img')
+        if img:
+            image_url = upload_image.delay(base64.b64encode(img.read()), 'avatars', True)
+            user = request.user
+            user.image_url = image_url.wait(timeout=None, interval=0.5)
+            user.save()
+            return Response({'image_url': user.image_url}, status=status.HTTP_200_OK)
+        return Response({'img': 'no image'}, status=status.HTTP_400_BAD_REQUEST)
 
     # !ONLY FOR CHAT APP!
     @action(permission_classes=(IsAuthenticated,), detail=True)
