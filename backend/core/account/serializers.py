@@ -15,6 +15,7 @@ class UsersCreateSerializer(UserCreateSerializer):
                   'email',
                   'first_name',
                   'last_name',
+                  'image_url',
                   'created_at',
                   'updated_at',
                   'phone',
@@ -30,6 +31,7 @@ class UserDetailSerializer(UserSerializer):
                   'email',
                   'first_name',
                   'last_name',
+                  'image_url',
                   'phone',
                   'collections',
                   )
@@ -48,5 +50,6 @@ class UserEditSerializer(UserSerializer):
                   'last_name',
                   'email',
                   'phone',
+                  'image_url',
                   'id',
                   )
