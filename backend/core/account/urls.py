@@ -15,6 +15,7 @@ urlpatterns = [
     path('users/all/', views.UserViewSet.as_view({'get': 'all'}), name='all'),  # !ONLY FOR CHAT APP!
     path("users/<int:pk>/edit", views.UserViewSet.as_view({"get": "user_edit_get", "post": "user_edit_post"}), name="edit"),
     path("users/<int:pk>/", views.UserViewSet.as_view({"get": "user_get"}), name="user_detail"),
+    path("users/<int:pk>/upload_avatar/", views.UserViewSet.as_view({'post': 'upload_avatar'}), name='upload_avatar'),
 
     path("reset/password-reset/", PasswordResetView.as_view(
         email_template_name="./password_reset_email.html", success_url=reverse_lazy("account:password_reset_done")), name="password_reset"),

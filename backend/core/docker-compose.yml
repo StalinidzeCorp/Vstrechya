@@ -87,3 +87,5 @@ services:
 
 volumes:
   pgdbdata: null
+  grafana_data:
+  prometheus_data:

@@ -9,7 +9,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'django']
 CELERY_BROKER_URL = 'redis://redis-qoovee/1'
 CELERY_RESULTS_URL = 'redis://redis-qoovee/1'
 AUTH_USER_MODEL = 'account.UserAccount'
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django_structlog',
     'channels',
     'corsheaders',
+    "django_prometheus",
 
     'account',
     'collection',
@@ -139,6 +140,7 @@ LOGGING = {
     }
 }
 MIDDLEWARE = [
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django_structlog.middlewares.RequestMiddleware",
 
     'django.middleware.security.SecurityMiddleware',
@@ -151,6 +153,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -209,7 +212,7 @@ ASGI_APPLICATION = 'messenger.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': "django_prometheus.db.backends.postgresql",
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
@@ -220,10 +223,12 @@ DATABASES = {
 
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
+        "BACKEND": "django_prometheus.cache.backends.redis.RedisCache",
         "LOCATION": "redis://redis-qoovee/0",
     }
 }
+
+PROMETHEUS_EXPORT_MIGRATIONS = os.environ.get("PROMETHEUS_EXPORT_MIGRATIONS", True)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
