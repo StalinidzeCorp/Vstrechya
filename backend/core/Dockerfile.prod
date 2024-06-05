@@ -44,4 +44,5 @@ COPY . $APP_HOME
 
 RUN chown -R app:app $APP_HOME
 
+USER root
 ENTRYPOINT ["bash", "/home/app/web/entrypoint.sh"]
