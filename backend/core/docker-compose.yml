@@ -104,5 +104,7 @@ services:
 
 volumes:
   pgdbdata: null
+  static_volume:
+  media_volume:
 #  grafana_data:
 #  prometheus_data:
