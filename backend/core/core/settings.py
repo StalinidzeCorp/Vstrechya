@@ -8,8 +8,8 @@ from .utils import add_open_telemetry_spans
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get("DEBUG", default=True)
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS', default='*')]
+DEBUG = int(os.environ.get("DEBUG", default=0))
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='*').split(',')
 CELERY_BROKER_URL = 'redis://redis-qoovee/1'
 CELERY_RESULTS_URL = 'redis://redis-qoovee/1'
 AUTH_USER_MODEL = 'account.UserAccount'
