@@ -9,8 +9,17 @@ services:
       - .:/usr/src/app
     ports:
       - "8010:8010"
-    env_file:
-      - ./.env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - EMAIL_USER
+      - EMAIL_PASSWORD
+      - SECRET_KEY
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
     depends_on:
       pgdb:
         condition: service_healthy
