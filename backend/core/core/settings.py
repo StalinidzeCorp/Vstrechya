@@ -213,11 +213,11 @@ ASGI_APPLICATION = 'messenger.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': "django_prometheus.db.backends.postgresql",
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'pgdb',
-        'PORT': 5432,
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 
@@ -278,7 +278,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.pubsub.RedisPubSubChannelLayer",
         "CONFIG": {
             "hosts": [{
-                "address": "redis://redis-messanger/0",
+                "address": "redis://redis-qoovee/2",
             }]
         }
     }
@@ -289,9 +289,9 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_ROOT = ''
-STATIC_URL = '/static/'
-# STATICFILES_DIRS = ('static',)
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = ('static',)
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

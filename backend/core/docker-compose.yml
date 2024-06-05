@@ -1,25 +1,36 @@
 services:
   django: &django
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     container_name: backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn -c gunicorn_config.py
     volumes:
       - .:/usr/src/app
     ports:
-      - "8000:8000"
+      - "8010:8010"
+    env_file:
+      - ./.env
     depends_on:
-      - pgdb
+      pgdb:
+        condition: service_healthy
 
   pgdb:
     image: postgres
     restart: always
+    env_file: .env
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     container_name: pgdb
     volumes:
       - pgdbdata:/var/lib/postgresql/data/
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "$POSTGRES_DB", "-U", "$POSTGRES_USER" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   adminer:
     image: adminer
@@ -32,12 +43,6 @@ services:
     restart: always
     ports:
       - "6379:6379"
-
-  redis-messanger:
-    image: redis:6.0.9
-    restart: always
-    ports:
-      - "6380:6380"
 
   celery-worker:
     build: .
@@ -67,25 +72,25 @@ services:
     ports:
       - "5555:5555"
 
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3333:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--web.enable-lifecycle'
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
+#  grafana:
+#    image: grafana/grafana:latest
+#    ports:
+#      - "3333:3000"
+#    volumes:
+#      - grafana_data:/var/lib/grafana
+#
+#  prometheus:
+#    image: prom/prometheus:latest
+#    ports:
+#      - "9090:9090"
+#    command:
+#      - '--config.file=/etc/prometheus/prometheus.yml'
+#      - '--web.enable-lifecycle'
+#    volumes:
+#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#      - prometheus_data:/prometheus
 
 volumes:
   pgdbdata: null
-  grafana_data:
-  prometheus_data:
+#  grafana_data:
+#  prometheus_data:
