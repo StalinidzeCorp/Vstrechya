@@ -25,7 +25,7 @@ services:
         condition: service_healthy
 
   pgdb:
-    image: postgres
+    image: postgres:16.3-alpine
     restart: always
     environment:
       - POSTGRES_DB
@@ -40,14 +40,14 @@ services:
       timeout: 5s
       retries: 5
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - "8080:8080"
 
   redis-qoovee:
-    image: redis:6.0.9
+    image: redis:7.0-alpine
     restart: always
     ports:
       - "6379:6379"
