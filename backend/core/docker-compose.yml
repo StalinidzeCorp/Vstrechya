@@ -27,7 +27,6 @@ services:
   pgdb:
     image: postgres
     restart: always
-    env_file: .env
     environment:
       - POSTGRES_DB
       - POSTGRES_USER
