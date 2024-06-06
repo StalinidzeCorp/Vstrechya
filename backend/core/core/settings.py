@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'collection',
     'museum',
     'messenger',
-    'celery',
+    "apps.celery.apps.CeleryConfig",
 ]
 
 CORS_ALLOWED_ORIGINS = [

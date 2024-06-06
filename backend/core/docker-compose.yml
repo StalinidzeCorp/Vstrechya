@@ -61,7 +61,7 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: worker
-    entrypoint: [ "sh", "-c", "celery worker --app=core -n vstrechyaworker --loglevel=info" ]
+    entrypoint: [ "sh", "-c", "celery -A celery worker -n vstrechyaworker --loglevel=info" ]
     volumes:
       - .:/usr/src/app
     links:
@@ -76,7 +76,7 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: beat
-    entrypoint: [ "sh", "-c", "celery beat --app=core --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler" ]
+    entrypoint: [ "sh", "-c", "celery -A celery beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler" ]
     volumes:
       - .:/usr/src/app
     links:
@@ -91,7 +91,7 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: flower
-    entrypoint: [ "sh", "-c", "celery flower --app=core" ]
+    entrypoint: [ "sh", "-c", "celery -A celery flower" ]
     volumes:
       - .:/usr/src/app
     links:
