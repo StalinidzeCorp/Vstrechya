@@ -1,7 +1,7 @@
 import base64
 import io
 
-from celeryapp.celery import app
+from core.celery.celery import app
 from django.core.cache import cache
 from django.conf import settings
 import boto3
