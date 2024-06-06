@@ -13,12 +13,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='*').split(',')
 CELERY_BROKER_URL = 'redis://redis-qoovee/1'
 CELERY_RESULTS_URL = 'redis://redis-qoovee/1'
 AUTH_USER_MODEL = 'account.UserAccount'
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
-SECURE_PROXY_SSL_HEADER = 'https'
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
-SECURE_SSL_REDIRECT = True
-# https://docs.djangoproject.com/en/dev/ref/middleware/#x-content-type-options-nosniff
-SECURE_CONTENT_TYPE_NOSNIFF = True
 
 INSTALLED_APPS = [
     "daphne",
@@ -46,8 +40,8 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://localhost:5173',
 ]
 
 base_structlog_processors = [
