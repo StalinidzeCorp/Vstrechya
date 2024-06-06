@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from . import settings
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
-urlpatterns = ([
+urlpatterns = [
     path("", include("account.urls"), name="users"),
     path("", include("museum.urls"), name="users"),
     path("", include("collection.urls"), name="collections"),
@@ -13,4 +13,4 @@ urlpatterns = ([
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
+]
