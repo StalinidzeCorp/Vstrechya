@@ -139,20 +139,14 @@ LOGGING = {
     }
 }
 MIDDLEWARE = [
-    "django_prometheus.middleware.PrometheusBeforeMiddleware",
-    "django_structlog.middlewares.RequestMiddleware",
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-
     'corsheaders.middleware.CorsMiddleware',
-
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -226,8 +220,6 @@ CACHES = {
         "LOCATION": "redis://redis-qoovee/0",
     }
 }
-
-PROMETHEUS_EXPORT_MIGRATIONS = os.environ.get("PROMETHEUS_EXPORT_MIGRATIONS", True)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

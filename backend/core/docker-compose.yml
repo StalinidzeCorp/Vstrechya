@@ -61,10 +61,12 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: worker
+    env_file:
+      - stack.env
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb/${POSTGRES_DB}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb:5432/${POSTGRES_DB}
     entrypoint: [ "sh", "-c", "celery -A core.celery worker -n vstrechyaworker --loglevel=info" ]
     volumes:
       - .:/usr/src/app
@@ -80,10 +82,12 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: beat
+    env_file:
+      - stack.env
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb/${POSTGRES_DB}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb:5432/${POSTGRES_DB}
     entrypoint: [ "sh", "-c", "celery -A core.celery beat --loglevel=info" ]
     volumes:
       - .:/usr/src/app
@@ -99,11 +103,13 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: flower
+    env_file:
+      - stack.env
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
       - FLOWER_PORT=5555
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb/${POSTGRES_DB}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb:5432/${POSTGRES_DB}
     entrypoint: [ "sh", "-c", "celery -A core.celery flower" ]
     volumes:
       - .:/usr/src/app
