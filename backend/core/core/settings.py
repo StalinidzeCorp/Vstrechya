@@ -13,6 +13,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='*').split(',')
 CELERY_BROKER_URL = 'redis://redis-qoovee/1'
 CELERY_RESULTS_URL = 'redis://redis-qoovee/1'
 AUTH_USER_MODEL = 'account.UserAccount'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 INSTALLED_APPS = [
     "daphne",
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'museum',
     'messenger',
     "apps.celery.apps.CeleryConfig",
+    'django_celery_beat',
 ]
 
 CORS_ALLOWED_ORIGINS = [
