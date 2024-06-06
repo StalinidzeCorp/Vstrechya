@@ -13,7 +13,7 @@ def delete_cache(key_prefix: str):
     cache.delete_pattern(keys_pattern)
 
 
-@app.shared_task
+@app.task
 def upload_image(img, app: str, with_celery=True):
     if with_celery:
         img = io.BytesIO(base64.b64decode(img.decode(encoding='utf-8')))
