@@ -64,12 +64,13 @@ services:
     entrypoint: celery
     command: -A celery_app.app worker -n vstrechyaworker --loglevel=info
     volumes:
-      - .:/usr/src/app
+      - .:/home/app/web/
     links:
       - redis-qoovee
     depends_on:
       - redis-qoovee
       - pgdb
+      - django
 
   flower:
     build:
@@ -79,12 +80,13 @@ services:
     entrypoint: celery
     command: -A celery_app.app flower
     volumes:
-      - .:/usr/src/app
+      - .:/home/app/web/
     links:
       - redis-qoovee
     depends_on:
       - redis-qoovee
       - pgdb
+      - django
     ports:
       - "5555:5555"
 
