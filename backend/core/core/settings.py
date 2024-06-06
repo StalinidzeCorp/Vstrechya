@@ -50,6 +50,17 @@ CORS_ALLOWED_ORIGINS = [
     'https://vstrechya.space',
 ]
 
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:5173',
+    'http://localhost:5173',
+    'https://127.0.0.1:5173',
+    'https://localhost:5173',
+    'http://vstrechya.space:5173',
+    'https://vstrechya.space:5173',
+    'http://vstrechya.space',
+    'https://vstrechya.space',
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 base_structlog_processors = [
