@@ -61,6 +61,8 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: worker
+    environment:
+      - CELERY_BROKER_URL=redis://redis-qoovee/1
     entrypoint: [ "sh", "-c", "celery -A celery worker -n vstrechyaworker --loglevel=info" ]
     volumes:
       - .:/usr/src/app
@@ -76,6 +78,8 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: beat
+    environment:
+      - CELERY_BROKER_URL=redis://redis-qoovee/1
     entrypoint: [ "sh", "-c", "celery -A celery beat --loglevel=info" ]
     volumes:
       - .:/usr/src/app
@@ -91,6 +95,9 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: flower
+    environment:
+      - CELERY_BROKER_URL=redis://redis-qoovee/1
+      - FLOWER_PORT=5555
     entrypoint: [ "sh", "-c", "celery -A celery flower" ]
     volumes:
       - .:/usr/src/app
