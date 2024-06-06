@@ -6,7 +6,7 @@ import os
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', default='awdojawoidjq39ur89hfajsncz3827$$@#avHfalwm')
 DEBUG = int(os.environ.get("DEBUG", default=0))
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='*').split(',')
 CELERY_BROKER_URL = 'redis://redis-qoovee/1'
