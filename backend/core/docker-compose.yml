@@ -59,7 +59,8 @@ services:
   celery-worker:
     build: .
     hostname: worker
-    command: celery -A celery_app.app worker -n vstrechyaworker --loglevel=info
+    entrypoint: celery
+    command: -A ./celery_app.app worker -n yatsworker --loglevel=info
     volumes:
       - .:/usr/src/app
     links:
@@ -71,7 +72,8 @@ services:
   flower:
     build: .
     hostname: flower
-    command: celery -A celery_app.app flower
+    entrypoint: celery
+    command: -A ./celery_app.app flower
     volumes:
       - .:/usr/src/app
     links:
