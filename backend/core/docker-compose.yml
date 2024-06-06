@@ -61,9 +61,9 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: worker
-    entrypoint: [ "sh", "-c", "celery -A core.celery worker -n vstrechyaworker --loglevel=info" ]
+    entrypoint: [ "sh", "-c", "celery worker --app=core -n vstrechyaworker --loglevel=info" ]
     volumes:
-      - .:/home/app/web
+      - .:/usr/src/app
     links:
       - redis-qoovee
     depends_on:
@@ -76,9 +76,9 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: beat
-    entrypoint: [ "sh", "-c", "celery -A core.celery beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler" ]
+    entrypoint: [ "sh", "-c", "celery beat --app=core --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler" ]
     volumes:
-      - .:/home/app/web
+      - .:/usr/src/app
     links:
       - redis-qoovee
     depends_on:
@@ -91,9 +91,9 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: flower
-    entrypoint: [ "sh", "-c", "celery -A core.celery flower" ]
+    entrypoint: [ "sh", "-c", "celery flower --app=core" ]
     volumes:
-      - .:/home/app/web
+      - .:/usr/src/app
     links:
       - redis-qoovee
     depends_on:
