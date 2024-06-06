@@ -35,6 +35,8 @@ services:
       - POSTGRES_DB
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
     container_name: pgdb
     volumes:
       - pgdbdata:/var/lib/postgresql/data/
@@ -62,6 +64,8 @@ services:
       dockerfile: Dockerfile.prod
     hostname: worker
     environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb:5432/${POSTGRES_DB}
@@ -81,6 +85,8 @@ services:
       dockerfile: Dockerfile.prod
     hostname: beat
     environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@pgdb:5432/${POSTGRES_DB}
@@ -100,6 +106,8 @@ services:
       dockerfile: Dockerfile.prod
     hostname: flower
     environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
       - FLOWER_PORT=5555
