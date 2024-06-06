@@ -61,8 +61,6 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: worker
-    env_file:
-      - stack.env
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
@@ -82,8 +80,6 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: beat
-    env_file:
-      - stack.env
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
@@ -103,8 +99,6 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: flower
-    env_file:
-      - stack.env
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - CELERY_RESULT_BACKEND=redis://redis-qoovee/1
