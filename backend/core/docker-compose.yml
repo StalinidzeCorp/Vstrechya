@@ -63,7 +63,7 @@ services:
     hostname: worker
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
-    entrypoint: [ "sh", "-c", "celery -A celery worker -n vstrechyaworker --loglevel=info" ]
+    entrypoint: [ "sh", "-c", "celery -A celeryapp worker -n vstrechyaworker --loglevel=info" ]
     volumes:
       - .:/usr/src/app
     links:
@@ -80,7 +80,7 @@ services:
     hostname: beat
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
-    entrypoint: [ "sh", "-c", "celery -A celery beat --loglevel=info" ]
+    entrypoint: [ "sh", "-c", "celery -A celeryapp beat --loglevel=info" ]
     volumes:
       - .:/usr/src/app
     links:
@@ -98,7 +98,7 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis-qoovee/1
       - FLOWER_PORT=5555
-    entrypoint: [ "sh", "-c", "celery -A celery flower" ]
+    entrypoint: [ "sh", "-c", "celery -A celeryapp flower" ]
     volumes:
       - .:/usr/src/app
     links:
