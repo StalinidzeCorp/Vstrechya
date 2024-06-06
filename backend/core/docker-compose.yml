@@ -44,11 +44,11 @@ services:
       timeout: 5s
       retries: 5
 
-#  adminer:
-#    image: adminer
-#    restart: always
-#    ports:
-#      - "8080:8080"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
 
   redis-qoovee:
     image: redis:7.0-alpine
