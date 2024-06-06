@@ -3,7 +3,6 @@ from pathlib import Path
 import structlog
 from dotenv import load_dotenv
 import os
-from .utils import add_open_telemetry_spans
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,7 +50,6 @@ base_structlog_processors = [
     structlog.stdlib.add_log_level,
     structlog.stdlib.filter_by_level,
     # Perform %-style formatting.
-    add_open_telemetry_spans,
     structlog.stdlib.PositionalArgumentsFormatter(),
     # Add a timestamp in ISO 8601 format.
     structlog.processors.TimeStamper(fmt="iso"),
