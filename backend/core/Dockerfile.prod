@@ -39,12 +39,10 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
 COPY ./entrypoint.sh ./
-COPY ./celery_app.py ./
 COPY ./ $APP_HOME
 
 RUN chown -R app:app /$APP_HOME
 RUN chmod +x $APP_HOME/entrypoint.sh
-RUN chmod +x $APP_HOME/celery_app.py
 
 USER app
 
