@@ -211,7 +211,7 @@ ASGI_APPLICATION = 'messenger.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': "django_prometheus.db.backends.postgresql",
+        'ENGINE': "django.db.backends.postgresql",
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
