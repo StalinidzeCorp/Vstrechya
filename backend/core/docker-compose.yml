@@ -75,7 +75,7 @@ services:
       build:
         context: .
         dockerfile: Dockerfile.prod
-      hostname: celery-beat
+      hostname: beat
       entrypoint: [ "sh", "-c", "celery -A celery_app beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler" ]
       volumes:
         - .:/home/app/web/
