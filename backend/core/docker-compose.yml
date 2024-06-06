@@ -57,10 +57,12 @@ services:
       - "6379:6379"
 
   celery-worker:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     hostname: worker
     entrypoint: celery
-    command: -A .celery_app worker -n vstrechyaworker --loglevel=info
+    command: -A celery_app.app worker -n vstrechyaworker --loglevel=info
     volumes:
       - .:/usr/src/app
     links:
@@ -70,10 +72,12 @@ services:
       - pgdb
 
   flower:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     hostname: flower
     entrypoint: celery
-    command: -A .celery_app flower
+    command: -A celery_app.app flower
     volumes:
       - .:/usr/src/app
     links:
