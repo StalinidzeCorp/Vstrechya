@@ -61,8 +61,7 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     hostname: worker
-    entrypoint: celery
-    command: -A celery_app.app worker -n vstrechyaworker --loglevel=info
+    entrypoint: [ "sh", "-c", "celery -A celery_app worker -n vstrechyaworker --loglevel=info" ]
     volumes:
       - .:/home/app/web/
     links:
@@ -72,23 +71,37 @@ services:
       - pgdb
       - django
 
-  flower:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
-    hostname: flower
-    entrypoint: celery
-    command: -A celery_app.app flower
-    volumes:
-      - .:/home/app/web/
-    links:
-      - redis-qoovee
-    depends_on:
-      - redis-qoovee
-      - pgdb
-      - django
-    ports:
-      - "5555:5555"
+    celery-beat:
+      build:
+        context: .
+        dockerfile: Dockerfile.prod
+      hostname: celery-beat
+      entrypoint: [ "sh", "-c", "celery -A celery_app beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler" ]
+      volumes:
+        - .:/home/app/web/
+      links:
+        - redis-qoovee
+      depends_on:
+        - redis-qoovee
+        - pgdb
+        - django
+
+    flower:
+      build:
+        context: .
+        dockerfile: Dockerfile.prod
+      hostname: flower
+      entrypoint: [ "sh", "-c", "celery -A celery_app flower" ]
+      volumes:
+        - .:/home/app/web/
+      links:
+        - redis-qoovee
+      depends_on:
+        - redis-qoovee
+        - pgdb
+        - django
+      ports:
+        - "5555:5555"
 
 #  grafana:
 #    image: grafana/grafana:latest
