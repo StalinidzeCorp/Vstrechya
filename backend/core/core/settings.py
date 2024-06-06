@@ -198,10 +198,11 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
-AWS_SECRET = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_ACCESS = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET = '9h5XsZjgB56Dy775E7CtXM'
+AWS_ACCESS = 'gJ5HmgtmkbT1cUkwyMcgPZpj2vK3rF3vWmwaJnwxsewJ'
 AWS_URL = 'https://digital-portfolio.hb.ru-msk.vkcs.cloud/'
 AWS_ENDPOINT_URL = 'https://hb.ru-msk.vkcs.cloud/'
+
 
 TEMPLATES = [
     {
