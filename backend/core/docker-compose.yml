@@ -63,7 +63,7 @@ services:
     hostname: worker
     entrypoint: [ "sh", "-c", "celery -A core worker -n vstrechyaworker --loglevel=info" ]
     volumes:
-      - .:/home/app/web/
+      - .:/home/app/web
     links:
       - redis-qoovee
     depends_on:
@@ -78,7 +78,7 @@ services:
     hostname: beat
     entrypoint: [ "sh", "-c", "celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler" ]
     volumes:
-      - .:/home/app/web/
+      - .:/home/app/web
     links:
       - redis-qoovee
     depends_on:
@@ -93,7 +93,7 @@ services:
     hostname: flower
     entrypoint: [ "sh", "-c", "celery -A core flower" ]
     volumes:
-      - .:/home/app/web/
+      - .:/home/app/web
     links:
       - redis-qoovee
     depends_on:
