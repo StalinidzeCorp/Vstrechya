@@ -272,9 +272,9 @@ SIMPLE_JWT = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Yats API',
-    'DESCRIPTION': 'Yatspace API Endpoints',
-    'VERSION': '1.0.0',
+    'TITLE': 'Vstrechya API',
+    'DESCRIPTION': 'vstrechya.space API Endpoints',
+    'VERSION': '1.0.1',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
