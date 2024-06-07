@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'channels',
     'corsheaders',
     "django_prometheus",
+    "whitenoise",
 
     'account',
     'collection',
@@ -49,6 +50,13 @@ CORS_ALLOWED_ORIGINS = [
     'http://vstrechya.space',
     'https://vstrechya.space',
 ]
+
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:5173',
