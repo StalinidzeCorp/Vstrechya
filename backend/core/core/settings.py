@@ -49,6 +49,23 @@ CORS_ALLOWED_ORIGINS = [
     'https://vstrechya.space:5173',
     'http://vstrechya.space',
     'https://vstrechya.space',
+    'https://engine.vstrechya.space',
+    'http://engine.vstrechya.space',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:5173',
+    'http://localhost:5173',
+    'https://127.0.0.1:5173',
+    'https://localhost:5173',
+    'http://vstrechya.space:5173',
+    'https://vstrechya.space:5173',
+    'http://vstrechya.space',
+    'https://vstrechya.space',
+    'http://vstrechya.space:8010',
+    'https://vstrechya.space:8010',
+    'http://engine.vstrechya.space',
+    'https://engine.vstrechya.space',
 ]
 
 STORAGES = {
@@ -67,6 +84,8 @@ CORS_ORIGIN_WHITELIST = [
     'https://vstrechya.space:5173',
     'http://vstrechya.space',
     'https://vstrechya.space',
+    'https://engine.vstrechya.space',
+    'http://engine.vstrechya.space',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
