@@ -1,4 +1,4 @@
-# Yats
+# Vstrechya
      
 Start django:
   go to folder "core" and type: (Docker required)   
