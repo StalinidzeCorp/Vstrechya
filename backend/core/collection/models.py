@@ -19,7 +19,7 @@ class Collection(models.Model):
 class UserCollection(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
-    is_visible = models.BooleanField(default=True)
+    is_visible = models.BooleanField(default=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -32,7 +32,7 @@ class UserCollection(models.Model):
 class MuseumCollection(models.Model):
     museum = models.ForeignKey(Museum, on_delete=models.CASCADE)
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
-    is_visible = models.BooleanField(default=True)
+    is_visible = models.BooleanField(default=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
