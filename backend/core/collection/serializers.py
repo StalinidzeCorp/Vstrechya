@@ -11,7 +11,7 @@ User = get_user_model()
 class UserCollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ('id', 'name')
+        fields = '__all__'
 
 
 class CollectionItemSerializer(serializers.ModelSerializer):
