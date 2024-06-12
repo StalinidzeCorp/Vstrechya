@@ -29,4 +29,4 @@ class CollectionCreateSerializer(serializers.ModelSerializer):
 class UserCollectionCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCollection
-        fields = '__all__'
+        fields = ('user', 'collection')
