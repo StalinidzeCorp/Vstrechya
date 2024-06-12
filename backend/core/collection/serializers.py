@@ -8,7 +8,7 @@ from .models import CollectionItem
 User = get_user_model()
 
 
-class UserCollectionSerializer(UserCreateSerializer):
+class UserCollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         fields = ('id', 'name')
