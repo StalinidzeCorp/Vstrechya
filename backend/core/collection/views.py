@@ -30,7 +30,7 @@ class CollectionsViewSet(viewsets.ViewSet):
     @action(detail=True)
     def get_collection_by_id(self, request, *args, **kwargs):
         collection_id = kwargs.get('collection_id')
-        collection_items = get_object_or_404(CollectionItem, collection_id=collection_id)
+        collection_items = CollectionItem.objects.filter(collection_id=collection_id)
         serializer = CollectionItemSerializer(collection_items, many=True)
         return Response(serializer.data)
 
