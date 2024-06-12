@@ -47,7 +47,8 @@ class CollectionsViewSet(viewsets.ViewSet):
             user_collection_serializer = UserCollectionCreateSerializer(data=data)
             if user_collection_serializer.is_valid():
                 user_collection_serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
