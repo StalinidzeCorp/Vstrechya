@@ -43,7 +43,8 @@ class CollectionsViewSet(viewsets.ViewSet):
         serializer = CollectionCreateSerializer(data=request.data)
         if serializer.is_valid():
             collection = serializer.save()
-            user_collection_serializer = UserCollectionCreateSerializer(user=request.user, collection=collection)
+            data = {"user": request.user, "collection": collection}
+            user_collection_serializer = UserCollectionCreateSerializer(data=data)
             if user_collection_serializer.is_valid():
                 user_collection_serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
